@@ -21,10 +21,14 @@ import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 
+import com.intel.cosbench.log.LogFactory;
+import com.intel.cosbench.log.Logger;
 import com.intel.cosbench.model.DriverInfo;
 
 public class PingDriverRunner implements Runnable{
 
+    private static final Logger LOGGER = LogFactory.getSystemLogger();
+	
 	private int interval = 5000;
 	private DriverInfo[] driverInfos;
 	
@@ -44,11 +48,14 @@ public class PingDriverRunner implements Runnable{
 	}
 
 	private void pingDrivers(DriverInfo[] driverInfos) {
+		LOGGER.debug("entering com.intel.cosbench.controller.service.PingDriverRunner.pingDrivers()");
+
 		for (DriverInfo driver : driverInfos) {
 			boolean isAlive = false;
 			
 			String ipAddress = getIpAddres(driver.getUrl());
 			Integer port = getDriverPort(driver.getUrl());
+			LOGGER.debug("pingDrivers trying address {} port {}", ipAddress, port);
 			try {
 				if (!ipAddress.isEmpty()) {	
 					try{
@@ -59,10 +66,14 @@ public class PingDriverRunner implements Runnable{
 						socket.connect(reAddress,3000);
 						isAlive = true;
 						}catch(Exception e){
+							LOGGER.error("pingDrivers problem contacting {}, exception {}", 
+									String.valueOf(ipAddress)+":"+String.valueOf(port), e);
 							isAlive = false;
 						}
 				}
 			}finally{
+				LOGGER.debug("pingDrivers {} isAlive={}", 
+						String.valueOf(ipAddress)+":"+String.valueOf(port), isAlive);
 				driver.setAliveState(isAlive);
 			}
 		}

@@ -109,12 +109,16 @@ class KeystoneAuth extends NoneAuth {
         try {
             client.login();
         } catch (KeystoneTimeoutException te) {
+        	logger.debug("keystone timeout: {}", te);
             throw new AuthTimeoutException(te);
         } catch (KeystoneInterruptedException ie) {
+        	logger.debug("keystone interrupted: {}", ie);
             throw new AuthInterruptedException(ie);
         } catch (KeystoneAuthException ae) {
+        	logger.debug("keystone auth exception: {}", ae);
             throw new AuthBadException(ae);
         } catch (Exception e) {
+        	logger.debug("keystone other exception: {}, e");
             throw new AuthException(e);
         }
         return createContext();
