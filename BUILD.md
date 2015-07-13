@@ -41,14 +41,13 @@ folder in cosbench, then eclipse will recognize and import all plugin projects.
 them. "Window -> Preferences -> Plug-in Development -> Target Platform", in "Target definitions", choose the active one,
 normally, it's "Running Platform". Selecting "Edit..." button to add required plugins. 
 
-5. In COSBench, 3 folders under "dist" folder for plugins should be included: **main**, **osgi** and **osgi\libs**. After added those folders, then apply changes.
+5. In COSBench, 3 folders under "dist" folder for plugins should be included: **main**, **osgi** and **osgi\libs**.  Also, the folder "${eclipse_home} should be removed.  After making these changes, apply changes.
 
 6. Those error signs should disappear, then the development environment is ready.
 
-7. After applied modifications on one project, just generate the plugins by right clicking the project, and select "export... -> Plug-in Development -> Deployable plugins and fragments", 
-and set the "Directory" to "dist\osgi" folder. Then the plugins library will be placed at "dist\osgi\plugins" folder.
+7. After applied modifications on one project, just generate the plugins by right clicking the project, and select "export... -> Plug-in Development -> Deployable plugins and fragments", and set the "Directory" to "dist\osgi" folder. Then the plugins library will be placed at "dist\osgi\plugins" folder.
 
-8. One script called "pack.cmd" or "pack.sh" could help generate one delivable package by passing it the version number.  
+8. One script called "pack.cmd" or "pack.sh" could help generate one deliverable package by passing it the version number.  
 
 
 Debugging Environment
