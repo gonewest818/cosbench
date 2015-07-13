@@ -46,6 +46,6 @@ chmod +x $1/*.sh
 
 echo $(date +%Y%m%d) > $1/BUILD.no
 
-echo "Build up adaptor example enviornment"
+echo "Build up adaptor example environment"
 mkdir $1/ext
 cp -f -R ext/* $1/ext
