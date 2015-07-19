@@ -34,6 +34,13 @@ TOMCAT_CONFIG=conf/$SERVICE_NAME-tomcat-server.xml
 TOOL="nc"
 TOOL_PARAMS="-i 0"
 
+if [ `uname` == "Darwin" ]; then
+	# OS X echo builtin doesn't support -n option
+	ECHO=/bin/echo
+else
+	ECHO=echo
+fi
+
 #-------------------------------
 # MAIN
 #-------------------------------
@@ -41,37 +48,37 @@ TOOL_PARAMS="-i 0"
 rm -f $BOOT_LOG
 mkdir -p log
 
-echo "Launching osgi framwork ... "
+$ECHO "Launching osgi framwork ... "
 
 /usr/bin/nohup java -Dcosbench.tomcat.config=$TOMCAT_CONFIG -server -cp main/* org.eclipse.equinox.launcher.Main -configuration $OSGI_CONFIG -console $OSGI_CONSOLE_PORT 1> $BOOT_LOG 2>&1 &
 
 if [ $? -ne 0 ];
 then
-        echo "Error in launching osgi framework!"
+        $ECHO "Error in launching osgi framework!"
         cat $BOOT_LOG
         exit 1
 fi
 
 sleep 1
 
-echo "Successfully launched osgi framework!"
+$ECHO "Successfully launched osgi framework!"
 
-echo "Booting cosbench $SERVICE_NAME ... "
+$ECHO "Booting cosbench $SERVICE_NAME ... "
 
 succ=1
 
 which $TOOL 1>&2 >/dev/null
 if [ $? -ne 0 ]; then
-	echo "No appropriate tool found to detect cosbench $SERVICE_NAME status."
+	$ECHO "No appropriate tool found to detect cosbench $SERVICE_NAME status."
 	attemps=60
 	while [ $attemps -gt 0 ]; do
 		attemps=`expr $attemps - 1`
-		echo -n "."
+		$ECHO -n "."
 		sleep 1
 	done
 	succ=2
-	echo
-	echo "Started cosbench $SERVICE_NAME!"
+	$ECHO
+	$ECHO "Started cosbench $SERVICE_NAME!"
 else
 
 for module in $OSGI_BUNDLES
@@ -80,23 +87,23 @@ do
         attempts=60
         while [ $ready -ne 1 ];
         do
-                echo "ss -s ACTIVE cosbench" | $TOOL $TOOL_PARAMS 0.0.0.0 $OSGI_CONSOLE_PORT | grep $module >> /dev/null
+                $ECHO "ss -s ACTIVE cosbench" | $TOOL $TOOL_PARAMS 0.0.0.0 $OSGI_CONSOLE_PORT | grep $module >> /dev/null
                 if [ $? -ne 0 ];
                 then
                         attempts=`expr $attempts - 1`
                         if [ $attempts -eq 0 ];
                         then
-                                if [ $attempts -ne 60 ]; then echo ""; fi
-                                echo "Starting    $module    [ERROR]"
+                                if [ $attempts -ne 60 ]; then $ECHO ""; fi
+                                $ECHO "Starting    $module    [ERROR]"
                                 succ=0
                                 break
                         else
-                                echo -n "."
+                                $ECHO -n "."
                                 sleep 1
                         fi
                 else
-                        if [ $attempts -ne 60 ]; then echo ""; fi
-                        echo "Starting    $module    [OK]"
+                        if [ $attempts -ne 60 ]; then $ECHO ""; fi
+                        $ECHO "Starting    $module    [OK]"
                         ready=1
                 fi
         done
@@ -105,10 +112,10 @@ fi
 
 if [ $succ -eq 0 ];
 then
-        echo "Error in booting cosbench $SERVICE_NAME!"
+        $ECHO "Error in booting cosbench $SERVICE_NAME!"
         exit 1
 elif [ $succ -eq 1 ]; then
-	echo "Successfully started cosbench $SERVICE_NAME!"
+	$ECHO "Successfully started cosbench $SERVICE_NAME!"
 fi
 
 cat $BOOT_LOG

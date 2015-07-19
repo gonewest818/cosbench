@@ -6,3 +6,11 @@
 /0.3.0.9
 /META-INF
 /OSGI-INF
+
+# files generated via launching in eclipse #
+dist/osgi/logs.zip
+dist/osgi/plugins/cosbench*.jar
+release/log
+release/conf/*_1.conf
+release/conf/*_1.xml
+
