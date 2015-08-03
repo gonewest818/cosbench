@@ -43,6 +43,9 @@ cp -f 3rd-party-licenses.pdf $1/
 cp -f pkg.lst $1/
 
 chmod +x $1/*.sh
+rm -rf $1/log $1/archive
+mkdir $1/log
+mkdir $1/archive
 
 echo $(date +%Y%m%d) > $1/BUILD.no
 

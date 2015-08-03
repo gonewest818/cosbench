@@ -41,6 +41,7 @@ do
 	# driver.conf
 	name=""
 	url=""
+	log=${LOGLEVEL:-INFO}
 	cd conf
 	let "x=($i-1)*100+$base_port"
 	rm -f driver.conf
@@ -50,6 +51,7 @@ do
 	url="http:\/\/$ip:$x\/driver"
 	$SED "s/^name=.*$/name=${name}/" driver_$i.conf
 	$SED "s/^url=.*$/url=${url}/" driver_$i.conf
+	$SED "s/^log_level=.*$/log_level=${log}/" driver_$i.conf
 	ln -s driver_$i.conf driver.conf
 
 	#make driver-tomcat-server.xml

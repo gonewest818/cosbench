@@ -34,7 +34,7 @@ Below are steps to set up development environment in eclipse:
 
 2. get cosbench source code tree by git or downloading the whole zip package.
 
-3. in eclipse,  "File -> Import ... -> Existeing Projects into Workspace", and select the root directory to the "dev" 
+3. in eclipse,  "File -> Import ... -> Existing Projects into Workspace", and select the root directory to the "dev" 
 folder in cosbench, then eclipse will recognize and import all plugin projects.
 
 4. after imported, there will be error signs on projects, additional library path configuration should take to resolve 
